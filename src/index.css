@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #faf9ff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-base);
+  color: #1b1f52;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Atmospheric background ─────────────────────────────────────── */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.atmosphere-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.atmosphere-blob-1 {
+  width: 600px;
+  height: 600px;
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.55), transparent 70%);
+  animation: gradientDrift 22s ease-in-out infinite;
+}
+
+.atmosphere-blob-2 {
+  width: 700px;
+  height: 700px;
+  top: 20%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.5), transparent 70%);
+  animation: gradientDrift 25s ease-in-out infinite reverse;
+}
+
+.atmosphere-blob-3 {
+  width: 550px;
+  height: 550px;
+  bottom: -5%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.45), transparent 70%);
+  animation: gradientDrift 20s ease-in-out infinite;
+}
+
+.atmosphere-blob-4 {
+  width: 450px;
+  height: 450px;
+  top: 50%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.35), transparent 70%);
+  animation: gradientDrift 18s ease-in-out infinite reverse;
+}
+
+.atmosphere-blob-5 {
+  width: 400px;
+  height: 400px;
+  top: 10%;
+  right: 25%;
+  background: radial-gradient(circle, rgba(217, 70, 239, 0.4), transparent 70%);
+  animation: gradientDrift 23s ease-in-out infinite;
+}
+
+/* Cursor-reactive light */
+.atmosphere-cursor {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  will-change: transform;
+}
+
+/* ─── Particles ─────────────────────────────────────────────────── */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.4);
+  pointer-events: none;
+}
+
+/* ─── UI component styles ───────────────────────────────────────── */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-ink-900 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-ink-800 hover:shadow-lg hover:shadow-ink-900/20 active:scale-[0.98];
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-200 bg-white/70 px-5 py-2.5 text-sm font-medium text-ink-700 backdrop-blur-sm transition-all duration-200 hover:border-ink-300 hover:bg-white active:scale-[0.98];
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-500 transition-all duration-200 hover:bg-ink-100 hover:text-ink-800 active:scale-[0.97];
+}
+
+.card-dark {
+  @apply rounded-2xl bg-ink-900/95 text-white shadow-xl shadow-ink-900/20 backdrop-blur-sm;
+}
+
+.input-dark {
+  @apply bg-transparent text-white placeholder:text-ink-300 focus:outline-none;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200;
+}
+
+.chip-inactive {
+  @apply bg-ink-100 text-ink-500 hover:bg-ink-200;
+}
+
+.chip-active {
+  @apply bg-ink-900 text-white;
+}
+
+/* ─── Shimmer loading ───────────────────────────────────────────── */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(27, 31, 82, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(27, 31, 82, 0.3);
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere-blob,
+  .particle {
+    animation: none !important;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Focus styles ──────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.5);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Selection ─────────────────────────────────────────────────── */
+::selection {
+  background: rgba(139, 92, 246, 0.25);
+}
