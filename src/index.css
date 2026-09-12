@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --bg-base: #faf9ff;
+  --bg-base: #FAF9FC;
 }
 
 html {
@@ -15,13 +15,14 @@ html {
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-base);
-  color: #1b1f52;
+  color: #171A45;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 /* ─── Atmospheric background ─────────────────────────────────────── */
+/* Blend sequence: PINK → MAGENTA → PURPLE → DEEP PURPLE → INDIGO → BLUE → CYAN */
 .atmosphere {
   position: fixed;
   inset: 0;
@@ -34,53 +35,58 @@ body {
 .atmosphere-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.5;
+  filter: blur(85px);
+  opacity: 0.45;
   will-change: transform;
 }
 
+/* Blob 1: Vivid Pink #F51F7D */
 .atmosphere-blob-1 {
-  width: 600px;
-  height: 600px;
+  width: 620px;
+  height: 620px;
   top: -10%;
   left: -5%;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.55), transparent 70%);
+  background: radial-gradient(circle, rgba(245, 31, 125, 0.48), transparent 70%);
   animation: gradientDrift 22s ease-in-out infinite;
 }
 
+/* Blob 2: Magenta #B817A8 / Purple #7610C3 */
 .atmosphere-blob-2 {
-  width: 700px;
-  height: 700px;
-  top: 20%;
+  width: 720px;
+  height: 720px;
+  top: 15%;
   right: -10%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.5), transparent 70%);
+  background: radial-gradient(circle, rgba(118, 16, 195, 0.45), rgba(184, 23, 168, 0.3), transparent 70%);
   animation: gradientDrift 25s ease-in-out infinite reverse;
 }
 
+/* Blob 3: Deep Purple #4B12A8 / Indigo #3825B8 */
 .atmosphere-blob-3 {
-  width: 550px;
-  height: 550px;
+  width: 580px;
+  height: 580px;
   bottom: -5%;
-  left: 30%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.45), transparent 70%);
+  left: 28%;
+  background: radial-gradient(circle, rgba(56, 37, 184, 0.42), rgba(75, 18, 168, 0.3), transparent 70%);
   animation: gradientDrift 20s ease-in-out infinite;
 }
 
+/* Blob 4: Royal Blue #4564E8 / Blue #4893E5 / Cyan #48BDD9 */
 .atmosphere-blob-4 {
-  width: 450px;
-  height: 450px;
+  width: 480px;
+  height: 480px;
   top: 50%;
-  left: 10%;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.35), transparent 70%);
+  left: 8%;
+  background: radial-gradient(circle, rgba(72, 189, 217, 0.35), rgba(69, 100, 232, 0.28), transparent 70%);
   animation: gradientDrift 18s ease-in-out infinite reverse;
 }
 
+/* Blob 5: Magenta #B817A8 / Vivid Pink #F51F7D */
 .atmosphere-blob-5 {
-  width: 400px;
-  height: 400px;
-  top: 10%;
+  width: 420px;
+  height: 420px;
+  top: 8%;
   right: 25%;
-  background: radial-gradient(circle, rgba(217, 70, 239, 0.4), transparent 70%);
+  background: radial-gradient(circle, rgba(184, 23, 168, 0.38), rgba(245, 31, 125, 0.25), transparent 70%);
   animation: gradientDrift 23s ease-in-out infinite;
 }
 
@@ -90,7 +96,7 @@ body {
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+  background: radial-gradient(circle, rgba(118, 16, 195, 0.16), rgba(56, 37, 184, 0.08), transparent 70%);
   filter: blur(60px);
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -103,7 +109,6 @@ body {
 .particle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(139, 92, 246, 0.4);
   pointer-events: none;
 }
 
@@ -113,11 +118,11 @@ body {
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-200 bg-white/70 px-5 py-2.5 text-sm font-medium text-ink-700 backdrop-blur-sm transition-all duration-200 hover:border-ink-300 hover:bg-white active:scale-[0.98];
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-200 bg-white/80 px-5 py-2.5 text-sm font-medium text-ink-700 backdrop-blur-sm transition-all duration-200 hover:border-ink-300 hover:bg-white active:scale-[0.98];
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-500 transition-all duration-200 hover:bg-ink-100 hover:text-ink-800 active:scale-[0.97];
+  @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-500 transition-all duration-200 hover:bg-ink-100 hover:text-ink-900 active:scale-[0.97];
 }
 
 .card-dark {
@@ -133,7 +138,7 @@ body {
 }
 
 .chip-inactive {
-  @apply bg-ink-100 text-ink-500 hover:bg-ink-200;
+  @apply bg-ink-100 text-ink-500 hover:bg-ink-200 hover:text-ink-700;
 }
 
 .chip-active {
@@ -144,9 +149,9 @@ body {
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0.3) 100%
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.4) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
@@ -163,11 +168,11 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(27, 31, 82, 0.15);
+  background: rgba(23, 26, 69, 0.15);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(27, 31, 82, 0.3);
+  background: rgba(23, 26, 69, 0.3);
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────── */
@@ -184,12 +189,12 @@ body {
 
 /* ─── Focus styles ──────────────────────────────────────────────── */
 *:focus-visible {
-  outline: 2px solid rgba(99, 102, 241, 0.5);
+  outline: 2px solid rgba(56, 37, 184, 0.5);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* ─── Selection ─────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(139, 92, 246, 0.25);
+  background: rgba(245, 31, 125, 0.2);
 }

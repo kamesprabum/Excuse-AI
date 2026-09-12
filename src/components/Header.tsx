@@ -44,7 +44,7 @@ export function Header({ view, onNavigate }: HeaderProps) {
             >
               {item.label}
               {view === item.view && (
-                <span className="absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent-violet" />
+                <span className="absolute bottom-0 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent-pink" />
               )}
             </button>
           ))}

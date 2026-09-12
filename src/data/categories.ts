@@ -6,21 +6,21 @@ export const categories: Category[] = [
     label: 'Work',
     description: 'Late, missed meetings, deadlines, cancellations',
     icon: 'Briefcase',
-    accent: 'from-indigo-500 to-blue-500',
+    accent: 'from-accent-indigo to-accent-royal-blue',
   },
   {
     id: 'relationship',
     label: 'Relationship',
     description: 'Replying, calling, canceling plans, forgetting',
     icon: 'Heart',
-    accent: 'from-pink-500 to-fuchsia-500',
+    accent: 'from-accent-pink to-accent-magenta',
   },
   {
     id: 'family',
     label: 'Family',
     description: 'Coming home late, events, commitments, forgetting',
     icon: 'Home',
-    accent: 'from-violet-500 to-purple-500',
+    accent: 'from-accent-purple to-accent-deep-purple',
   },
 ];
 

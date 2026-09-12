@@ -61,7 +61,7 @@ export function ResultCard({ excuse, request, onRegenerate, onRefined, variation
       </div>
 
       {/* The excuse */}
-      <blockquote className="mb-6 border-l-2 border-accent-violet/60 pl-4 text-lg leading-relaxed text-white/95 md:text-xl">
+      <blockquote className="mb-6 border-l-2 border-accent-pink/70 pl-4 text-lg leading-relaxed text-white/95 md:text-xl">
         "{excuse.excuse}"
       </blockquote>
 
@@ -73,7 +73,7 @@ export function ResultCard({ excuse, request, onRegenerate, onRefined, variation
             <div
               key={i}
               className={`h-1.5 w-6 rounded-full transition-colors ${
-                i < excuse.believability ? 'bg-accent-violet' : 'bg-ink-700'
+                i < excuse.believability ? 'bg-accent-pink' : 'bg-ink-700'
               }`}
             />
           ))}

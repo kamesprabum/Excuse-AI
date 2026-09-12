@@ -47,7 +47,7 @@ export function SituationSelector({ selectedSituation, onSelect }: SituationSele
         onClick={toggle}
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all duration-200 active:scale-90 ${
           selectedSituation
-            ? 'bg-accent-violet/20 text-accent-violet'
+            ? 'bg-accent-pink/15 text-accent-pink'
             : 'bg-white/10 text-ink-200 hover:bg-white/20'
         }`}
         aria-label={selectedSituation ? `Situation: ${selectedSituation.label}. Click to change.` : 'Choose a situation'}
@@ -57,7 +57,7 @@ export function SituationSelector({ selectedSituation, onSelect }: SituationSele
       </button>
 
       {selectedSituation && !open && (
-        <span className="absolute top-full left-0 mt-2 whitespace-nowrap rounded-lg bg-ink-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg">
+        <span className="absolute top-full left-0 mt-2 whitespace-nowrap rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg">
           {selectedSituation.label}
         </span>
       )}

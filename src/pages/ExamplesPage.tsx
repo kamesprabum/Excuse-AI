@@ -61,7 +61,7 @@ export function ExamplesPage() {
                     {/* Excuse */}
                     <div className="bg-ink-900/95 p-5 text-white">
                       <div className="mb-2 flex items-center gap-2">
-                        <Quote size={14} className="text-accent-violet" />
+                        <Quote size={14} className="text-accent-pink" />
                         <p className="text-xs font-semibold uppercase tracking-wide text-ink-300">Excuse</p>
                       </div>
                       <blockquote className="text-base leading-relaxed text-white/95">

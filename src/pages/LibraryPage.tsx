@@ -61,7 +61,7 @@ export function LibraryPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search excuses, situations, tags…"
-            className="w-full rounded-xl border border-ink-100 bg-white/70 py-3 pl-12 pr-4 text-sm text-ink-800 placeholder:text-ink-300 backdrop-blur-sm transition-all focus:border-ink-300 focus:outline-none focus:ring-2 focus:ring-accent-violet/20"
+            className="w-full rounded-xl border border-ink-100 bg-white/70 py-3 pl-12 pr-4 text-sm text-ink-800 placeholder:text-ink-300 backdrop-blur-sm transition-all focus:border-ink-300 focus:outline-none focus:ring-2 focus:ring-accent-pink/25"
             aria-label="Search the excuse library"
           />
         </div>

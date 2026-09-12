@@ -164,7 +164,7 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
           <button
             onClick={handleGenerate}
             disabled={!canGenerate}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-violet to-accent-indigo text-white transition-all duration-200 hover:shadow-lg hover:shadow-accent-violet/30 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 md:h-11 md:w-11"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-indigo to-accent-royal-blue text-white transition-all duration-200 hover:shadow-lg hover:shadow-accent-indigo/30 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 md:h-11 md:w-11"
             aria-label="Generate excuse"
           >
             <ArrowUp size={20} />
@@ -213,7 +213,7 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
           <div className="flex-1">
             <p className="shimmer-text text-base font-medium">Crafting your excuse…</p>
             <div className="mt-2 h-1.5 w-48 overflow-hidden rounded-full bg-ink-700">
-              <div className="h-full w-1/3 animate-pulse-soft rounded-full bg-gradient-to-r from-accent-violet to-accent-indigo" />
+              <div className="h-full w-1/3 animate-pulse-soft rounded-full bg-gradient-to-r from-accent-pink to-accent-indigo" />
             </div>
           </div>
         </div>

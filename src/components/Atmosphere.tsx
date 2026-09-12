@@ -56,7 +56,7 @@ export function Atmosphere() {
         size: 2 + Math.random() * 3,
         duration: 6 + Math.random() * 6,
         delay: Math.random() * 5,
-        color: ['rgba(139,92,246,0.35)', 'rgba(236,72,153,0.3)', 'rgba(99,102,241,0.3)', 'rgba(6,182,212,0.25)'][i % 4],
+        color: ['rgba(245,31,125,0.3)', 'rgba(184,23,168,0.28)', 'rgba(118,16,195,0.3)', 'rgba(72,189,217,0.25)'][i % 4],
       })),
     []
   );
