@@ -28,10 +28,18 @@ export default {
           blue: '#4893E5',
           cyan: '#48BDD9',
         },
+        purpleAtmosphere: {
+          lavender: '#F1E8FF',
+          soft: '#D8B4FE',
+          electric: '#A855F7',
+          royal: '#7C3AED',
+          deep: '#3B176F',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        hero: ['Outfit', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       animation: {
         'gradient-drift': 'gradientDrift 20s ease-in-out infinite',
@@ -46,8 +54,8 @@ export default {
       keyframes: {
         gradientDrift: {
           '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-          '33%': { transform: 'translate(3%, -2%) scale(1.05)' },
-          '66%': { transform: 'translate(-2%, 3%) scale(0.98)' },
+          '33%': { transform: 'translate(5%, -3%) scale(1.05)' },
+          '66%': { transform: 'translate(-3%, 5%) scale(0.98)' },
         },
         floatParticle: {
           '0%, 100%': { opacity: '0.2', transform: 'translateY(0)' },

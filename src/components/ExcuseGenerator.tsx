@@ -25,6 +25,13 @@ const DEFAULT_TONE: Tone = 'natural' as Tone;
 const DEFAULT_DETAIL: DetailLevel = 'natural';
 const DEFAULT_OUTCOME: DesiredOutcome = 'explain';
 
+const PLACEHOLDER_PHRASES = [
+  'I need an excuse for work...',
+  "I can't make it to dinner tonight...",
+  'I forgot to reply to my girlfriend...',
+  'I need to leave early today...',
+];
+
 export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGeneratorProps) {
   const [situation, setSituation] = useState<Situation | null>(initialSituation ?? null);
   const [input, setInput] = useState('');
@@ -40,7 +47,51 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
   const [variation, setVariation] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  // Typewriter placeholder animation
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [placeholderText, setPlaceholderText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Typewriter animation effect
+  useEffect(() => {
+    const currentPhrase = PLACEHOLDER_PHRASES[phraseIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (isPaused) {
+      // Pause when full sentence is typed
+      timeout = setTimeout(() => {
+        setIsPaused(false);
+        setIsDeleting(true);
+      }, 2000);
+    } else if (isDeleting) {
+      if (placeholderText.length > 0) {
+        // Deleting character by character
+        timeout = setTimeout(() => {
+          setPlaceholderText(currentPhrase.substring(0, placeholderText.length - 1));
+        }, 40);
+      } else {
+        // Short pause before next phrase starts
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % PLACEHOLDER_PHRASES.length);
+        timeout = setTimeout(() => {}, 500);
+      }
+    } else {
+      if (placeholderText.length < currentPhrase.length) {
+        // Typing character by character
+        timeout = setTimeout(() => {
+          setPlaceholderText(currentPhrase.substring(0, placeholderText.length + 1));
+        }, 70);
+      } else {
+        // Finished typing full phrase
+        setIsPaused(true);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [placeholderText, isDeleting, isPaused, phraseIndex]);
 
   // Handle external situation selection
   useEffect(() => {
@@ -154,7 +205,7 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={situation?.prompt ?? "Tell me what happened…"}
+            placeholder={situation?.prompt ?? (placeholderText || " ")}
             rows={1}
             className="flex-1 resize-none bg-transparent py-2.5 text-base text-white placeholder:text-ink-300 focus:outline-none md:text-lg"
             style={{ minHeight: '44px', maxHeight: '200px' }}

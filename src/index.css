@@ -1,11 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+/* Polites Thin by Artisan Studio declaration */
+@font-face {
+  font-family: 'Polites';
+  src: url('/fonts/Polites-Thin.woff2') format('woff2'),
+    url('/fonts/Polites-Thin.otf') format('opentype'),
+    url('/fonts/Polites-Thin.ttf') format('truetype');
+  font-weight: 100 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-base: #FAF9FC;
+  --bg-base: #FFF9F2;
 }
 
 html {
@@ -21,8 +32,14 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── Atmospheric background ─────────────────────────────────────── */
-/* Blend sequence: PINK → MAGENTA → PURPLE → DEEP PURPLE → INDIGO → BLUE → CYAN */
+.font-hero {
+  font-family: 'Polites', serif;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+}
+
+/* ─── Continuous Atmospheric Background (Reference Asymmetric Landscape) ── */
+/* Palette: Warm Ivory #FFF9F2 → Soft Cream #F8E5D2 → Apricot #F2B89B → Dusty Coral #D98282 → Muted Rose #C47A91 → Soft Muted Blue #8FA8C4 */
 .atmosphere {
   position: fixed;
   inset: 0;
@@ -32,84 +49,610 @@ body {
   background: var(--bg-base);
 }
 
-.atmosphere-blob {
+.atmosphere-container {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(85px);
-  opacity: 0.45;
-  will-change: transform;
+  inset: 0;
+  overflow: hidden;
 }
 
-/* Blob 1: Vivid Pink #F51F7D */
-.atmosphere-blob-1 {
-  width: 620px;
-  height: 620px;
-  top: -10%;
-  left: -5%;
-  background: radial-gradient(circle, rgba(245, 31, 125, 0.48), transparent 70%);
-  animation: gradientDrift 22s ease-in-out infinite;
-}
-
-/* Blob 2: Magenta #B817A8 / Purple #7610C3 */
-.atmosphere-blob-2 {
-  width: 720px;
-  height: 720px;
-  top: 15%;
-  right: -10%;
-  background: radial-gradient(circle, rgba(118, 16, 195, 0.45), rgba(184, 23, 168, 0.3), transparent 70%);
-  animation: gradientDrift 25s ease-in-out infinite reverse;
-}
-
-/* Blob 3: Deep Purple #4B12A8 / Indigo #3825B8 */
-.atmosphere-blob-3 {
-  width: 580px;
-  height: 580px;
-  bottom: -5%;
-  left: 28%;
-  background: radial-gradient(circle, rgba(56, 37, 184, 0.42), rgba(75, 18, 168, 0.3), transparent 70%);
-  animation: gradientDrift 20s ease-in-out infinite;
-}
-
-/* Blob 4: Royal Blue #4564E8 / Blue #4893E5 / Cyan #48BDD9 */
-.atmosphere-blob-4 {
-  width: 480px;
-  height: 480px;
-  top: 50%;
-  left: 8%;
-  background: radial-gradient(circle, rgba(72, 189, 217, 0.35), rgba(69, 100, 232, 0.28), transparent 70%);
-  animation: gradientDrift 18s ease-in-out infinite reverse;
-}
-
-/* Blob 5: Magenta #B817A8 / Vivid Pink #F51F7D */
-.atmosphere-blob-5 {
-  width: 420px;
-  height: 420px;
-  top: 8%;
-  right: 25%;
-  background: radial-gradient(circle, rgba(184, 23, 168, 0.38), rgba(245, 31, 125, 0.25), transparent 70%);
-  animation: gradientDrift 23s ease-in-out infinite;
-}
-
-/* Cursor-reactive light */
-.atmosphere-cursor {
+/* Unified continuous atmospheric gradient field */
+.atmosphere-field {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(118, 16, 195, 0.16), rgba(56, 37, 184, 0.08), transparent 70%);
+  inset: -8% -12% -6% -12%;
+  width: 124%;
+  height: 114%;
+  pointer-events: none;
+}
+
+/* 1. Translucent upper ivory fog veil keeping the top clean and light */
+.atmosphere-sun-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      #FFF9F2 0%,
+      rgba(255, 249, 242, 0.95) 25%,
+      rgba(255, 249, 242, 0.45) 50%,
+      transparent 100%);
+  z-index: 1;
+}
+
+/* 2. Left High Mountain Crest (peaks high on left at ~55% height) */
+.atmosphere-peak-left {
+  position: absolute;
+  bottom: 0;
+  left: -8%;
+  width: 48%;
+  height: 64%;
+  background: radial-gradient(ellipse 85% 75% at 35% 42%,
+      #F2B89B 0%,
+      #D98282 35%,
+      #C47A91 62%,
+      rgba(248, 229, 210, 0.3) 85%,
+      transparent 100%);
+  border-radius: 45% 55% 20% 20% / 60% 70% 30% 30%;
+  transform: rotate(-6deg);
+  filter: blur(65px);
+  will-change: transform, border-radius;
+  animation: wavePeakLeft 24s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* 3. Center-Right Rising Dome (second warm dome at ~50% height) */
+.atmosphere-dome-center {
+  position: absolute;
+  bottom: 2%;
+  left: 32%;
+  width: 46%;
+  height: 56%;
+  background: radial-gradient(ellipse 85% 70% at 50% 40%,
+      #F2B89B 0%,
+      #D98282 32%,
+      #C47A91 60%,
+      rgba(248, 229, 210, 0.4) 85%,
+      transparent 100%);
+  border-radius: 50% 50% 30% 30% / 65% 65% 35% 35%;
+  transform: rotate(3deg);
+  filter: blur(68px);
+  will-change: transform, border-radius;
+  animation: waveDomeCenter 24s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* 4. Right Sweeping Diagonal Cool Muted Blue Stream (stretches up to right) */
+.atmosphere-stream-right {
+  position: absolute;
+  bottom: 0;
+  right: -8%;
+  width: 55%;
+  height: 68%;
+  background: radial-gradient(ellipse 80% 60% at 65% 45%,
+      #8FA8C4 0%,
+      rgba(143, 168, 196, 0.88) 32%,
+      rgba(196, 122, 145, 0.55) 62%,
+      rgba(242, 184, 155, 0.2) 85%,
+      transparent 100%);
+  border-radius: 65% 35% 45% 55% / 55% 65% 35% 45%;
+  transform: rotate(14deg);
   filter: blur(60px);
+  will-change: transform, border-radius;
+  animation: waveStreamRight 24s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* 5. Undulating Warm Valley Underflow connecting the formations */
+.atmosphere-underflow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 42%;
+  background: linear-gradient(to top,
+      rgba(196, 122, 145, 0.4) 0%,
+      rgba(217, 130, 130, 0.3) 50%,
+      transparent 100%),
+    linear-gradient(to right,
+      rgba(217, 130, 130, 0.45) 0%,
+      rgba(242, 184, 155, 0.5) 32%,
+      rgba(196, 122, 145, 0.45) 62%,
+      rgba(143, 168, 196, 0.6) 100%);
+  filter: blur(55px);
+  will-change: transform;
+  animation: waveUnderflow 24s ease-in-out infinite;
+  z-index: 3;
+}
+
+/* 6. Luminous Horizon Bed glowing along the bottom */
+.atmosphere-horizon-bed {
+  position: absolute;
+  bottom: 0;
+  left: -5%;
+  right: -5%;
+  height: 30%;
+  background: radial-gradient(ellipse 95% 70% at 45% 100%,
+      #FFF9F2 0%,
+      #F8E5D2 35%,
+      #F2B89B 68%,
+      rgba(217, 130, 130, 0.3) 88%,
+      transparent 100%);
+  filter: blur(45px);
+  will-change: transform;
+  animation: waveHorizonBed 24s ease-in-out infinite;
+  z-index: 4;
+}
+
+/* ─── Coordinated Organic Atmospheric Wave Animations (24s cycle) ─ */
+@keyframes wavePeakLeft {
+
+  0%,
+  100% {
+    transform: rotate(-6deg) translateY(-35px) scaleY(1.06);
+    border-radius: 44% 56% 20% 20% / 62% 72% 28% 28%;
+  }
+
+  33% {
+    transform: rotate(-5.5deg) translateY(8px) scaleY(0.98);
+    border-radius: 50% 50% 22% 18% / 65% 65% 32% 28%;
+  }
+
+  66% {
+    transform: rotate(-6.5deg) translateY(24px) scaleY(0.94);
+    border-radius: 40% 60% 18% 22% / 56% 74% 26% 34%;
+  }
+}
+
+@keyframes waveDomeCenter {
+
+  0%,
+  100% {
+    transform: rotate(3deg) translateY(14px) scaleY(0.96);
+    border-radius: 50% 50% 30% 30% / 65% 65% 35% 35%;
+  }
+
+  33% {
+    transform: rotate(3.5deg) translateY(-40px) scaleY(1.07);
+    border-radius: 47% 53% 26% 34% / 72% 58% 30% 40%;
+  }
+
+  66% {
+    transform: rotate(2.5deg) translateY(12px) scaleY(0.97);
+    border-radius: 53% 47% 34% 26% / 60% 70% 38% 32%;
+  }
+}
+
+@keyframes waveStreamRight {
+
+  0%,
+  100% {
+    transform: rotate(14deg) translateY(26px) scaleY(0.94);
+    border-radius: 65% 35% 45% 55% / 55% 65% 35% 45%;
+  }
+
+  33% {
+    transform: rotate(13.5deg) translateY(8px) scaleY(0.98);
+    border-radius: 60% 40% 40% 60% / 58% 62% 38% 42%;
+  }
+
+  66% {
+    transform: rotate(14.5deg) translateY(-45px) scaleY(1.07);
+    border-radius: 70% 30% 50% 50% / 50% 70% 30% 50%;
+  }
+}
+
+@keyframes waveUnderflow {
+
+  0%,
+  100% {
+    transform: translateY(-12px) scaleY(1.04);
+  }
+
+  50% {
+    transform: translateY(10px) scaleY(0.96);
+  }
+}
+
+@keyframes waveHorizonBed {
+
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+
+  50% {
+    transform: translateY(-11px) scale(1.02);
+  }
+}
+
+/* ─── Small Floating Atmospheric Sphere (Tiny Space Planet) ─────── */
+.atmospheric-sphere-wrapper {
+  position: absolute;
+  top: 18%;
+  right: 22%;
+  width: 120px;
+  height: 120px;
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease;
-  opacity: 0;
+  z-index: 10;
   will-change: transform;
 }
 
-/* ─── Particles ─────────────────────────────────────────────────── */
-.particle {
-  position: absolute;
+@media (max-width: 1024px) {
+  .atmospheric-sphere-wrapper {
+    top: 16%;
+    right: 12%;
+    width: 96px;
+    height: 96px;
+  }
+}
+
+@media (max-width: 640px) {
+  .atmospheric-sphere-wrapper {
+    top: 14%;
+    right: 8%;
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.atmospheric-sphere {
+  position: relative;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  overflow: hidden;
+  clip-path: circle(50% at 50% 50%);
+  -webkit-clip-path: circle(50% at 50% 50%);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  isolation: isolate;
+  background: #071A2B;
+}
+
+/* Base planet skin layer */
+.planet-skin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  will-change: opacity;
   pointer-events: none;
+}
+
+/* 45s Cycle Animation (15s per planet with ~3s smooth ease crossfade) */
+.planet-earth {
+  animation: cycleEarth 45s ease-in-out infinite;
+}
+
+.planet-mars {
+  animation: cycleMars 45s ease-in-out infinite;
+}
+
+.planet-jupiter {
+  animation: cycleJupiter 45s ease-in-out infinite;
+}
+
+@keyframes cycleEarth {
+  0%, 26% {
+    opacity: 1;
+  }
+  33.3%, 93.3% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cycleMars {
+  0%, 26% {
+    opacity: 0;
+  }
+  33.3%, 59.3% {
+    opacity: 1;
+  }
+  66.7%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cycleJupiter {
+  0%, 59.3% {
+    opacity: 0;
+  }
+  66.7%, 93.3% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Internal flowing atmospheric mist */
+.sphere-internal-flow {
+  position: absolute;
+  inset: -8%;
+  border-radius: 50%;
+  filter: blur(6px);
+  animation: sphereFlowDrift 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes sphereFlowDrift {
+  0% {
+    transform: translateY(-3%) scale(1);
+  }
+
+  50% {
+    transform: translateY(3%) scale(1.03);
+  }
+
+  100% {
+    transform: translateY(-1%) scale(0.98);
+  }
+}
+
+/* ===================================================================
+   1. EARTH PALETTE (#071A2B, #0B3D5C, #167A9A, #39A9B8, #6FBF9F, #D8D2A8, #EAF4F1)
+   =================================================================== */
+.planet-earth {
+  background: #071A2B;
+  box-shadow:
+    inset 0 2px 7px rgba(234, 244, 241, 0.7),
+    inset 0 -6px 16px rgba(7, 26, 43, 0.95),
+    inset 4px 4px 14px rgba(11, 61, 92, 0.6),
+    inset -4px -4px 16px rgba(57, 169, 184, 0.45),
+    inset 0 0 22px rgba(22, 122, 154, 0.4),
+    0 10px 32px rgba(7, 26, 43, 0.35),
+    0 4px 12px rgba(22, 122, 154, 0.2);
+}
+
+.planet-earth .sphere-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%,
+      #167A9A 0%,
+      #0B3D5C 42%,
+      #071A2B 82%,
+      #040E18 100%);
+}
+
+.planet-earth .sphere-peach-dome {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  right: 8%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 90% 70% at 52% 42%,
+      #39A9B8 0%,
+      #167A9A 45%,
+      #0B3D5C 78%,
+      transparent 100%);
+}
+
+.planet-earth .sphere-blue-band {
+  position: absolute;
+  top: 35%;
+  left: -4%;
+  right: -4%;
+  height: 34%;
+  border-radius: 40%;
+  background: radial-gradient(ellipse 95% 65% at 38% 46%,
+      rgba(111, 191, 159, 0.85) 0%,
+      rgba(22, 122, 154, 0.7) 45%,
+      rgba(11, 61, 92, 0.45) 75%,
+      transparent 100%);
+}
+
+.planet-earth .sphere-coral-base {
+  position: absolute;
+  bottom: 4%;
+  left: 6%;
+  right: 6%;
+  height: 52%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 85% 65% at 58% 68%,
+      rgba(216, 210, 168, 0.7) 0%,
+      rgba(57, 169, 184, 0.6) 38%,
+      rgba(11, 61, 92, 0.8) 78%,
+      transparent 100%);
+}
+
+.planet-earth .sphere-rim-light {
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 80% 35% at 48% 10%,
+      rgba(234, 244, 241, 0.95) 0%,
+      rgba(57, 169, 184, 0.6) 45%,
+      rgba(22, 122, 154, 0.2) 75%,
+      transparent 100%);
+  pointer-events: none;
+}
+
+/* ===================================================================
+   2. MARS PALETTE (#170B08, #3A1710, #71301E, #A94727, #C96A3D, #D98B61, #8B4030)
+   =================================================================== */
+.planet-mars {
+  background: #170B08;
+  box-shadow:
+    inset 0 2px 7px rgba(217, 139, 97, 0.7),
+    inset 0 -6px 16px rgba(23, 11, 8, 0.95),
+    inset 4px 4px 14px rgba(58, 23, 16, 0.6),
+    inset -4px -4px 16px rgba(169, 71, 39, 0.45),
+    inset 0 0 22px rgba(113, 48, 30, 0.4),
+    0 10px 32px rgba(23, 11, 8, 0.35),
+    0 4px 12px rgba(169, 71, 39, 0.2);
+}
+
+.planet-mars .sphere-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%,
+      #A94727 0%,
+      #71301E 35%,
+      #3A1710 70%,
+      #170B08 100%);
+}
+
+.planet-mars .sphere-peach-dome {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  right: 8%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 90% 70% at 52% 42%,
+      #D98B61 0%,
+      #C96A3D 42%,
+      #A94727 75%,
+      transparent 100%);
+}
+
+.planet-mars .sphere-blue-band {
+  position: absolute;
+  top: 35%;
+  left: -4%;
+  right: -4%;
+  height: 34%;
+  border-radius: 40%;
+  background: radial-gradient(ellipse 95% 65% at 38% 46%,
+      rgba(139, 64, 48, 0.85) 0%,
+      rgba(113, 48, 30, 0.75) 45%,
+      rgba(58, 23, 16, 0.45) 75%,
+      transparent 100%);
+}
+
+.planet-mars .sphere-coral-base {
+  position: absolute;
+  bottom: 4%;
+  left: 6%;
+  right: 6%;
+  height: 52%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 85% 65% at 58% 68%,
+      #C96A3D 0%,
+      #71301E 45%,
+      #3A100B 78%,
+      transparent 100%);
+}
+
+.planet-mars .sphere-rim-light {
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 80% 35% at 48% 10%,
+      rgba(217, 139, 97, 0.95) 0%,
+      rgba(201, 106, 61, 0.6) 45%,
+      rgba(169, 71, 39, 0.2) 75%,
+      transparent 100%);
+  pointer-events: none;
+}
+
+/* ===================================================================
+   3. JUPITER PALETTE (#18120F, #49352A, #80634B, #B18A68, #D0B28D, #E2D0B2, #8B5E45)
+   =================================================================== */
+.planet-jupiter {
+  background: #18120F;
+  box-shadow:
+    inset 0 2px 7px rgba(226, 208, 178, 0.7),
+    inset 0 -6px 16px rgba(24, 18, 15, 0.95),
+    inset 4px 4px 14px rgba(73, 53, 42, 0.6),
+    inset -4px -4px 16px rgba(177, 138, 104, 0.45),
+    inset 0 0 22px rgba(128, 99, 75, 0.4),
+    0 10px 32px rgba(24, 18, 15, 0.35),
+    0 4px 12px rgba(139, 94, 69, 0.2);
+}
+
+.planet-jupiter .sphere-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%,
+      #B18A68 0%,
+      #80634B 35%,
+      #49352A 70%,
+      #18120F 100%);
+}
+
+.planet-jupiter .sphere-peach-dome {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  right: 8%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 90% 70% at 52% 42%,
+      #E2D0B2 0%,
+      #D0B28D 40%,
+      #B18A68 75%,
+      transparent 100%);
+}
+
+.planet-jupiter .sphere-blue-band {
+  position: absolute;
+  top: 35%;
+  left: -4%;
+  right: -4%;
+  height: 34%;
+  border-radius: 40%;
+  background: radial-gradient(ellipse 95% 65% at 38% 46%,
+      rgba(139, 94, 69, 0.85) 0%,
+      rgba(128, 99, 75, 0.75) 45%,
+      rgba(73, 53, 42, 0.45) 75%,
+      transparent 100%);
+}
+
+.planet-jupiter .sphere-coral-base {
+  position: absolute;
+  bottom: 4%;
+  left: 6%;
+  right: 6%;
+  height: 52%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 85% 65% at 58% 68%,
+      #D0B28D 0%,
+      #80634B 45%,
+      #49352A 78%,
+      transparent 100%);
+}
+
+.planet-jupiter .sphere-rim-light {
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 80% 35% at 48% 10%,
+      rgba(226, 208, 178, 0.95) 0%,
+      rgba(208, 178, 141, 0.6) 45%,
+      rgba(177, 138, 104, 0.2) 75%,
+      transparent 100%);
+  pointer-events: none;
+}
+
+/* ─── Mascot subtle floating animation ───────────────────────────── */
+@keyframes floatSubtle {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-float-subtle {
+  animation: floatSubtle 3.8s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* ─── UI component styles ───────────────────────────────────────── */
@@ -147,12 +690,10 @@ body {
 
 /* ─── Shimmer loading ───────────────────────────────────────────── */
 .shimmer-text {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.85) 50%,
-    rgba(255, 255, 255, 0.4) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(255, 255, 255, 0.4) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.8s linear infinite;
   -webkit-background-clip: text;
@@ -164,23 +705,39 @@ body {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(23, 26, 69, 0.15);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(23, 26, 69, 0.3);
 }
 
 /* ─── Reduced motion ────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere-blob,
-  .particle {
+
+  .atmosphere-field,
+  .atmosphere-peak-left,
+  .atmosphere-dome-center,
+  .atmosphere-stream-right,
+  .atmosphere-underflow,
+  .atmosphere-horizon-bed,
+  .atmosphere-sun-veil,
+  .atmospheric-sphere-wrapper,
+  .sphere-internal-flow,
+  .planet-earth,
+  .planet-mars,
+  .planet-jupiter,
+  .animate-float-subtle {
     animation: none !important;
   }
+
   * {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
