@@ -1,4 +1,4 @@
-import type { Relationship, Tone, DetailLevel, DesiredOutcome } from '@/types';
+import type { Relationship, Tone, DetailLevel, DesiredOutcome, Severity } from '@/types';
 
 interface OptionGroup<T extends string> {
   label: string;
@@ -59,15 +59,23 @@ const outcomeOptions: { value: DesiredOutcome; label: string }[] = [
   { value: 'soften', label: 'Soften' },
 ];
 
+const severityOptions: { value: Severity; label: string }[] = [
+  { value: 'mild', label: 'Mild' },
+  { value: 'moderate', label: 'Moderate' },
+  { value: 'critical', label: 'Critical' },
+];
+
 interface ContextControlsProps {
   relationship: Relationship;
   tone: Tone;
   detail: DetailLevel;
   outcome: DesiredOutcome;
+  severity: Severity;
   onRelationshipChange: (v: Relationship) => void;
   onToneChange: (v: Tone) => void;
   onDetailChange: (v: DetailLevel) => void;
   onOutcomeChange: (v: DesiredOutcome) => void;
+  onSeverityChange: (v: Severity) => void;
 }
 
 export function ContextControls({
@@ -75,15 +83,18 @@ export function ContextControls({
   tone,
   detail,
   outcome,
+  severity,
   onRelationshipChange,
   onToneChange,
   onDetailChange,
   onOutcomeChange,
+  onSeverityChange,
 }: ContextControlsProps) {
   return (
     <div className="grid gap-5 rounded-2xl border border-ink-100/80 bg-white/60 p-5 backdrop-blur-sm sm:grid-cols-2">
       <ChipRow label="Who's asking?" value={relationship} options={relationshipOptions} onChange={onRelationshipChange} />
       <ChipRow label="Desired outcome" value={outcome} options={outcomeOptions} onChange={onOutcomeChange} />
+      <ChipRow label="Severity" value={severity} options={severityOptions} onChange={onSeverityChange} />
       <ChipRow label="Tone" value={tone} options={toneOptions} onChange={onToneChange} />
       <ChipRow label="Detail" value={detail} options={detailOptions} onChange={onDetailChange} />
     </div>

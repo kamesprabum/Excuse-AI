@@ -6,6 +6,7 @@ import type {
   Tone,
   DetailLevel,
   DesiredOutcome,
+  Severity,
   ExcuseRequest,
   GeneratedExcuse,
 } from '@/types';
@@ -24,6 +25,7 @@ const DEFAULT_RELATIONSHIP: Relationship = 'other';
 const DEFAULT_TONE: Tone = 'natural' as Tone;
 const DEFAULT_DETAIL: DetailLevel = 'natural';
 const DEFAULT_OUTCOME: DesiredOutcome = 'explain';
+const DEFAULT_SEVERITY: Severity = 'moderate';
 
 const PLACEHOLDER_PHRASES = [
   'I need an excuse for work...',
@@ -41,6 +43,7 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
   const [tone, setTone] = useState<Tone>('polite');
   const [detail, setDetail] = useState<DetailLevel>(DEFAULT_DETAIL);
   const [outcome, setOutcome] = useState<DesiredOutcome>(DEFAULT_OUTCOME);
+  const [severity, setSeverity] = useState<Severity>(DEFAULT_SEVERITY);
 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GeneratedExcuse | null>(null);
@@ -76,7 +79,7 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
         // Short pause before next phrase starts
         setIsDeleting(false);
         setPhraseIndex((prev) => (prev + 1) % PLACEHOLDER_PHRASES.length);
-        timeout = setTimeout(() => {}, 500);
+        timeout = setTimeout(() => { }, 500);
       }
     } else {
       if (placeholderText.length < currentPhrase.length) {
@@ -132,22 +135,23 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
     }
   };
 
-  const canGenerate = situation && input.trim().length > 0 && !loading;
+  const canGenerate = input.trim().length > 0 && !loading;
 
   const handleGenerate = async () => {
-    if (!situation || !input.trim()) return;
+    if (!input.trim()) return;
     setLoading(true);
     setError(null);
     setResult(null);
 
     const req: ExcuseRequest = {
-      situationId: situation.id,
-      category: situation.category,
+      situationId: situation?.id || 'custom',
+      category: situation?.category || 'work',
       userInput: input.trim(),
       relationship,
       tone,
       detail,
       outcome,
+      severity,
     };
 
     try {
@@ -165,13 +169,14 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
     setVariation(nextVar);
 
     const req: ExcuseRequest = {
-      situationId: situation!.id,
-      category: situation!.category,
+      situationId: situation?.id || 'custom',
+      category: situation?.category || 'work',
       userInput: input.trim(),
       relationship,
       tone,
       detail,
       outcome,
+      severity,
     };
 
     setLoading(true);
@@ -249,10 +254,12 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
             tone={tone}
             detail={detail}
             outcome={outcome}
+            severity={severity}
             onRelationshipChange={setRelationship}
             onToneChange={setTone}
             onDetailChange={setDetail}
             onOutcomeChange={setOutcome}
+            onSeverityChange={setSeverity}
           />
         </div>
       )}
@@ -283,13 +290,14 @@ export function ExcuseGenerator({ initialSituation, onSituationUsed }: ExcuseGen
           <ResultCard
             excuse={result}
             request={{
-              situationId: situation!.id,
-              category: situation!.category,
+              situationId: situation?.id || 'custom',
+              category: situation?.category || 'work',
               userInput: input.trim(),
               relationship,
               tone,
               detail,
               outcome,
+              severity,
             }}
             onRegenerate={handleRegenerate}
             onRefined={setResult}

@@ -37,6 +37,8 @@ export type DesiredOutcome =
   | 'get_out'
   | 'soften';
 
+export type Severity = 'mild' | 'moderate' | 'critical';
+
 export interface ExcuseRequest {
   situationId: string;
   category: CategoryId;
@@ -45,6 +47,7 @@ export interface ExcuseRequest {
   tone: Tone;
   detail: DetailLevel;
   outcome: DesiredOutcome;
+  severity: Severity;
 }
 
 export interface GeneratedExcuse {
@@ -76,3 +79,12 @@ export interface ExampleItem {
 }
 
 export type View = 'home' | 'situations' | 'library' | 'examples';
+
+export type {
+  ExcuseContext,
+  ReasonStrategy,
+  ReasoningAnalysis,
+  AIExcusePayload,
+  PromptPayload,
+  AIProviderAdapter,
+} from '@/services/intelligence/types';
