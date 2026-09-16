@@ -76,7 +76,10 @@ export interface ReasoningAnalysis {
   };
   selectedStrategy: ReasonStrategy;
   safetyCheckPassed: boolean;
+  retrievedKnowledge?: import('./knowledge/types').KnowledgeRecord[];
 }
+
+export * from './knowledge/types';
 
 // ─── Structured AI Response Schema ───────────────────────────────────────────
 export interface AIExcusePayload {

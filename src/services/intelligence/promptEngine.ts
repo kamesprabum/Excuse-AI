@@ -12,20 +12,26 @@ The user's input describes the social situation or problem they face. Your job i
 RULES:
 1. DIRECT 1ST-PERSON VOICE:
    - Output ONLY the message sent TO the recipient (e.g. "I'm so sorry, I got caught up...").
-   - NEVER repeat or paraphrase the user's situation (e.g. NEVER say "My girlfriend is asking why..." or "I want to be upfront that...").
-   - NO meta-commentary (no "You could say:", "Here is an excuse:", "The reason is:").
+   - NEVER repeat or paraphrase the user's situation (e.g. NEVER say "My girlfriend is asking why...", "My manager noticed...", or "The situation arose because...").
+   - NO meta-commentary (no "You could say:", "Here is an excuse:", "Message to send:").
 
-2. SITUATION VS REASON:
-   - If user input is only a dilemma with NO reason (e.g. "My girlfriend is asking why I didn't reply all day"): Generate a plausible, simple everyday reason (distracted with urgent home task, phone on silent, etc.).
-   - If user input includes an explicit cause (e.g. "phone died", "train stopped"): Use that exact cause in the message. Do not invent a different story.
+2. NATURAL HUMAN LANGUAGE:
+   - Use natural everyday phrasing.
+   - AVOID robotic or corporate jargon in personal contexts (no "I would like to inform you that...", "Due to unforeseen circumstances...", "I want to be upfront that...").
+   - Conversational fillers (e.g., "Yeah", "Honestly", "Actually") should only be used when natural for the relationship and casual tone.
 
-3. BELIEVABILITY & SIMPLICITY:
-   - Keep reasons ordinary and natural. Do not invent complex fake specifics (no fake street names, fake timestamps, or fake documents).
+3. SITUATION VS REASON:
+   - If user input is only a dilemma with NO cause provided (e.g. "My girlfriend is asking why I didn't reply all day"): Generate a plausible, simple everyday reason (e.g. distracted with a home task, lost track of time). Do NOT invent high-drama crises.
+   - If user input includes an explicit cause (e.g. "phone died", "train stopped between stations"): Preserve that exact cause directly. Do NOT replace it.
 
-4. SEPARATE FOLLOW-UP:
+4. BEHAVIORAL KNOWLEDGE GUIDANCE:
+   - When behavioral patterns/rules are provided in the prompt, apply their communication pattern, believability rules, and avoid list.
+   - These are behavioral guides, NOT facts about the user.
+
+5. SEPARATE & CONSISTENT FOLLOW-UP:
    - Keep follow-up in the "followUp" object.
    - "followUp.question": Realistic question the recipient might ask.
-   - "followUp.answer": Consistent response reinforcing the EXACT same reason.
+   - "followUp.answer": Consistent response reinforcing the EXACT same reason (no contradictory new excuses).
 
 JSON OUTPUT SCHEMA:
 {
@@ -46,8 +52,25 @@ export function buildGenerationPrompt(ctx: ExcuseContext): PromptPayload {
   const contextAnalysis = analyzeUserContextInput(ctx.userInput);
 
   const reasonGuidance = contextAnalysis.hasUserProvidedReason
-    ? `User supplied cause: "${contextAnalysis.userSuppliedReason}". Use this cause directly.`
+    ? `User supplied cause: "${contextAnalysis.userSuppliedReason}". Use this cause directly. Do not invent another reason.`
     : `User gave dilemma only. Generate a plausible ${analysis.selectedStrategy} reason. Do NOT repeat the prompt.`;
+
+  // Format retrieved behavioral knowledge (if available)
+  let knowledgeSection = '';
+  if (analysis.retrievedKnowledge && analysis.retrievedKnowledge.length > 0) {
+    const topGuidance = analysis.retrievedKnowledge
+      .map(
+        (k, i) =>
+          `[Pattern ${i + 1}]:
+  - Flow: ${k.reasonPattern}
+  - Believability Rule: ${k.believabilityRule}
+  - Avoid: ${k.avoid.join(', ')}
+  ${k.followUpPattern ? `- Follow-up Guide: If asked "${k.followUpPattern.questionPattern}", respond: "${k.followUpPattern.responsePattern}"` : ''}`
+      )
+      .join('\n');
+
+    knowledgeSection = `\nBEHAVIORAL GUIDANCE (Communication patterns to follow — NOT facts about the user):\n${topGuidance}\n`;
+  }
 
   const userPrompt = `Generate a direct excuse message to send:
 
@@ -55,7 +78,7 @@ export function buildGenerationPrompt(ctx: ExcuseContext): PromptPayload {
 - Guidance: ${reasonGuidance}
 - Recipient: ${ctx.relationship} (${analysis.stage3_relationshipNuance.communicationStyle})
 - Severity: ${ctx.severity} | Tone: ${ctx.tone} | Detail: ${ctx.detail} (${analysis.stage7_detailConstraint.lengthGuidance}) | Outcome: ${ctx.outcome}
-
+${knowledgeSection}
 Return valid JSON. Output ONLY the message to the recipient in "excuse".`;
 
   return {
@@ -107,3 +130,4 @@ Return refined excuse in the same JSON format. Keep reason chain consistent.`;
     maxTokens: 400,
   };
 }
+

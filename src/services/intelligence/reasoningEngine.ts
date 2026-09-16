@@ -5,6 +5,7 @@ import type {
   ReasonStrategy,
   ReasoningAnalysis,
 } from './types';
+import { retrieveRelevantKnowledge } from './knowledge/knowledgeRetriever';
 
 // ─── Relationship Communication Archetypes ──────────────────────────────────
 const RELATIONSHIP_GUIDELINES: Record<
@@ -219,6 +220,7 @@ export function analyzeContext(ctx: ExcuseContext): ReasoningAnalysis {
   const strategy = inferReasonStrategy(ctx);
   const safetyPassed = evaluateSafety(ctx.userInput);
   const contextAnalysis = analyzeUserContextInput(ctx.userInput);
+  const retrievedKnowledge = retrieveRelevantKnowledge(ctx, 2);
 
   return {
     stage1_understanding: {
@@ -268,5 +270,6 @@ export function analyzeContext(ctx: ExcuseContext): ReasoningAnalysis {
     },
     selectedStrategy: strategy,
     safetyCheckPassed: safetyPassed,
+    retrievedKnowledge,
   };
 }
