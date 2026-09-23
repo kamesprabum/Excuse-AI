@@ -48,6 +48,21 @@ export interface KnowledgeRecord {
   source?: string;
   confidence?: number; // 0.0 to 1.0
   tags: string[];
+
+  // Emotional communication additions
+  emotionalContext?: {
+    recipientEmotion?: string;
+    userEmotion?: string;
+    emotionalImpact?: string;
+    repairNeed?: string;
+    reassuranceNeed?: string;
+    accountabilityNeed?: string;
+    emotionalIntensity?: 'mild' | 'moderate' | 'high' | 'deep';
+  };
+  relationshipDynamics?: string;
+  communicationPattern?: string;
+  emotionalRepairPattern?: string;
+  naturalLanguageSignals?: string[];
 }
 
 export interface KnowledgeRetrievalQuery {

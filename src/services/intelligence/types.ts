@@ -39,6 +39,69 @@ export interface ExcuseContext {
   severity: Severity;
 }
 
+// ─── Emotional Context Inference ─────────────────────────────────────────────
+export interface EmotionalContext {
+  recipientEmotion: string; // Cautious inference (e.g. "likely hurt, ignored, or disappointed")
+  userEmotion: string; // Cautious inference (e.g. "anxious, guilty, rushed, or apologetic")
+  emotionalImpact: string; // Likely effect on recipient (e.g. "feeling deprioritized, neglected, or left waiting")
+  relationshipDynamic: string; // Dynamic description (e.g. "romantic partner — mutual trust, expectation of warmth and presence")
+  trustSensitivity: 'low' | 'moderate' | 'high' | 'critical';
+  repairNeed: string; // Core emotional repair (e.g. "reassurance, validation, and warm reconnection")
+  reassuranceNeed: string; // Reassurance detail (e.g. "confirming care and priority without defensiveness")
+  accountabilityNeed: string; // Ownership requirement (e.g. "acknowledging delay cleanly without excuses")
+  emotionalIntensity: 'mild' | 'moderate' | 'high' | 'deep';
+}
+
+// ─── User Goal Taxonomy ───────────────────────────────────────────────────────
+export type UserGoalType =
+  | 'explain'
+  | 'apologize'
+  | 'postpone'
+  | 'cancel'
+  | 'soften'
+  | 'reconnect'
+  | 'reassure'
+  | 'set_a_boundary'
+  | 'reduce_conflict'
+  | 'ask_for_another_chance'
+  | 'escape_awkward_situation';
+
+export interface UserGoalAnalysis {
+  dominantGoal: UserGoalType;
+  secondaryGoal?: UserGoalType;
+  goalRationale: string;
+}
+
+// ─── Relationship Dynamics ───────────────────────────────────────────────────
+export interface RelationshipDynamicDetails {
+  relationship: Relationship;
+  dynamicName: string;
+  coreValues: string[];
+  communicationStyle: string;
+  accountabilityLevel: 'high' | 'moderate' | 'personal' | 'informal';
+  communicationDos: string[];
+  communicationDonts: string[];
+}
+
+// ─── Emotional Response Structure ────────────────────────────────────────────
+export interface EmotionalResponseStructure {
+  archetype: 'relationship' | 'work' | 'family' | 'friend' | 'academic' | 'client' | 'general';
+  flowSteps: string[];
+  structureDescription: string;
+  calibrationLevel: 'understated' | 'balanced' | 'sensitive' | 'high_accountability';
+}
+
+// ─── Natural Communication Guidance ──────────────────────────────────────────
+export interface NaturalCommunicationGuidance {
+  sentenceLengthGuidance: string;
+  cadence: string;
+  contractionsPreferred: boolean;
+  allowedNaturalPhrases: string[];
+  bannedPhrases: string[];
+  hesitationGuidance: string;
+  overExplanationTrap: string;
+}
+
 // ─── Reasoning Pipeline Stages ───────────────────────────────────────────────
 export interface ReasoningAnalysis {
   stage1_understanding: {
@@ -46,6 +109,9 @@ export interface ReasoningAnalysis {
     immediateProblem: string;
     targetPerson: string;
     userIntent: string;
+    isProblemDescriptionOnly: boolean;
+    hasUserProvidedReason: boolean;
+    userSuppliedReason?: string;
   };
   stage2_contextSynthesis: {
     baseSituationLabel: string;
@@ -74,6 +140,12 @@ export interface ReasoningAnalysis {
     detail: DetailLevel;
     lengthGuidance: string;
   };
+  // Deeper reasoning layers
+  relationshipDynamics: RelationshipDynamicDetails;
+  emotionalContext: EmotionalContext;
+  userGoal: UserGoalAnalysis;
+  emotionalResponseStructure: EmotionalResponseStructure;
+  naturalCommunication: NaturalCommunicationGuidance;
   selectedStrategy: ReasonStrategy;
   safetyCheckPassed: boolean;
   retrievedKnowledge?: import('./knowledge/types').KnowledgeRecord[];

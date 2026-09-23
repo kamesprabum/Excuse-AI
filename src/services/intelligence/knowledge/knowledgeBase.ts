@@ -106,10 +106,25 @@ export const KNOWLEDGE_BASE: KnowledgeRecord[] = [
     lesson:
       'Offer immediate replacement time slots to neutralize frustration over missed meetings.',
     exampleParaphrase:
-      "I'm so sorry I missed our sync — I got pulled into an urgent client issue and lost track of the start time. Can we reschedule for this afternoon? I have time at 2:00 or 4:30.",
+      "I'm sorry I missed our meeting. I got pulled into something and lost track of the time. I can make myself available this afternoon if you'd like to reschedule.",
     source: 'workplace-scheduling-patterns',
     confidence: 0.94,
-    tags: ['missed_meeting', 'calendar', 'boss', 'coworker', 'reschedule', 'urgent_issue'],
+    tags: ['missed_meeting', 'calendar', 'boss', 'manager', 'reschedule', 'urgent_issue'],
+    emotionalContext: {
+      recipientEmotion: 'inconvenienced by meeting disruption, expecting professional accountability',
+      emotionalImpact: 'disrupted schedule or delayed team sync',
+      repairNeed: 'immediate ownership, brief reason, availability to reschedule today',
+      emotionalIntensity: 'moderate',
+    },
+    relationshipDynamics: 'Manager-report relationship where respect for time and reliability are paramount',
+    communicationPattern: 'acknowledge issue → concise explanation → accountability → next step',
+    emotionalRepairPattern: 'restore confidence through promptness and readiness to make up the lost time',
+    naturalLanguageSignals: [
+      "I'm sorry I missed the meeting",
+      'got pulled into',
+      'lost track of the time',
+      'available this afternoon to reschedule',
+    ],
   },
   {
     id: 'kb-work-004',
@@ -208,10 +223,74 @@ export const KNOWLEDGE_BASE: KnowledgeRecord[] = [
     lesson:
       'When replying late to a partner, prioritize reassurance and affection over defensive justification.',
     exampleParaphrase:
-      "Hey, I'm so sorry — my day got completely hectic with stuff at home and I barely looked at my phone. How was your day? Can I call you in a few minutes?",
+      "Sorry, I know it probably looked like I was ignoring you. I got caught up with a bunch of stuff and completely lost track of my phone. I should've messaged you earlier.",
     source: 'interpersonal-relationship-patterns',
     confidence: 0.97,
     tags: ['late_reply', 'no_response', 'girlfriend', 'partner', 'relationship', 'texting', 'apology'],
+    emotionalContext: {
+      recipientEmotion: 'hurt, ignored, or disappointed by the extended silence',
+      emotionalImpact: 'feeling deprioritized, neglected, or left on read',
+      repairNeed: 'acknowledgment of impact, simple grounded reason, gentle responsibility, and reconnection',
+      emotionalIntensity: 'moderate',
+    },
+    relationshipDynamics: 'Romantic partnership with expectation of mutual emotional presence, attentiveness, and warmth',
+    communicationPattern: 'acknowledge impact → concise reason → appropriate responsibility → reconnect',
+    emotionalRepairPattern: 'warm reassurance, validating how it felt, and expressing desire to connect now',
+    naturalLanguageSignals: [
+      'Sorry, I know it probably looked like I was ignoring you',
+      'got caught up with a bunch of stuff',
+      'completely lost track of my phone',
+      "I should've messaged you earlier",
+    ],
+  },
+  {
+    id: 'kb-rel-004',
+    category: 'relationship',
+    situation: 'Was online/active but did not reply to girlfriend or boyfriend',
+    recipient: 'girlfriend',
+    relationship: 'partner',
+    userProblem: 'Partner noticed you were online or active on messaging apps but did not reply to their text',
+    reasonStrategy: 'communication_failure',
+    reasonPattern:
+      'acknowledge how it looked directly → explain quick passive check without room to properly reply → validate their frustration → initiate conversation',
+    deliveryStyle: 'honest, transparent, reassuring, attuned',
+    tone: 'casual',
+    detailLevel: 'natural',
+    believabilityRule:
+      'Admitting you only opened the app briefly for a specific quick check sounds genuine and disarming. Never deny being online or claim someone else had your phone.',
+    avoid: [
+      'claiming someone else was using your account or phone',
+      'getting defensive with "I am allowed to be online"',
+      'cold corporate phrasing or arguing over timestamps',
+    ],
+    followUpPattern: {
+      questionPattern: 'Why did you not at least send a quick reaction or note?',
+      responsePattern:
+        'Honestly admit you thought you would reply properly in just a moment and got pulled away, and take responsibility without making excuses.',
+    },
+    lesson:
+      'When caught active online, acknowledging the optical impact immediately defuses distrust far better than evasion.',
+    exampleParaphrase:
+      "I know it looked like I was ignoring you since I was active. I opened the app for two seconds to check a quick work message and had to put it right back down. I'm really sorry, I should've sent you a quick note first. Are you free to call?",
+    source: 'digital-relationship-patterns',
+    confidence: 0.98,
+    tags: ['online', 'active', 'girlfriend', 'partner', 'relationship', 'left_on_read', 'texting'],
+    emotionalContext: {
+      recipientEmotion: 'uniquely hurt or disrespected seeing partner online while left unaddressed',
+      emotionalImpact: 'feeling singled out, bypassed, or dismissed',
+      repairNeed: 'direct honesty without evasion, acknowledging the optics, and warm reassurance',
+      emotionalIntensity: 'high',
+    },
+    relationshipDynamics: 'Romantic partnership where perceived intentional omission creates immediate emotional friction',
+    communicationPattern: 'acknowledge optics → concise reality → take ownership → focus on them now',
+    emotionalRepairPattern: 'validate why it looked hurtful and assure them they are a top priority',
+    naturalLanguageSignals: [
+      'I know it looked like I was ignoring you',
+      'I was active',
+      "I'm really sorry",
+      "I should've sent you a quick note first",
+      'free to call?',
+    ],
   },
   {
     id: 'kb-rel-002',
@@ -309,10 +388,26 @@ export const KNOWLEDGE_BASE: KnowledgeRecord[] = [
     lesson:
       'Addressing safety concerns upfront resolves family tension faster than defending your timetable.',
     exampleParaphrase:
-      "Sorry I'm late! Things ran longer than expected at my friend's place and I didn't realize the time. I'm on my way home now and should be back in 15 minutes.",
+      "Sorry I'm late! Things ran longer than expected and I lost track of time. I'm totally fine and heading home now — should be back in about 20 minutes.",
     source: 'family-communication-patterns',
     confidence: 0.96,
     tags: ['coming_home_late', 'parents', 'family', 'curfew', 'reassurance', 'transit'],
+    emotionalContext: {
+      recipientEmotion: 'worried about safety, anxious over whereabouts, expecting consideration',
+      emotionalImpact: 'parental anxiety, waiting, uncertainty',
+      repairNeed: 'immediate reassurance of safety, concise reason for delay, exact ETA',
+      emotionalIntensity: 'moderate',
+    },
+    relationshipDynamics: 'Familial bond centered on safety, care, and respectful communication',
+    communicationPattern: 'acknowledge concern → explanation → reassurance → practical update',
+    emotionalRepairPattern: 'disarm worry immediately before providing logistical details',
+    naturalLanguageSignals: [
+      "Sorry I'm late!",
+      'Things ran longer than expected',
+      "I'm totally fine",
+      'heading home now',
+      'should be back in',
+    ],
   },
   {
     id: 'kb-fam-002',
@@ -409,10 +504,26 @@ export const KNOWLEDGE_BASE: KnowledgeRecord[] = [
     lesson:
       'Casual honesty with friends rebuilds momentum faster than dramatic stories.',
     exampleParaphrase:
-      "Hey! So sorry for the delayed callback — things got busy and it completely slipped my mind. How have you been? Let's catch up soon.",
+      "Sorry, I completely forgot to call you back. Things got a bit hectic and it slipped my mind. Free to chat for a few minutes?",
     source: 'friendship-dynamics-patterns',
     confidence: 0.96,
-    tags: ['missed_call', 'friend', 'casual', 'callback', 'oversight', 'friendship'],
+    tags: ['missed_call', 'friend', 'casual', 'callback', 'oversight', 'friendship', 'forgot'],
+    emotionalContext: {
+      recipientEmotion: 'might feel slightly forgotten or wondering what happened, receptive to casual contact',
+      emotionalImpact: 'mild slip in communication, zero high drama',
+      repairNeed: 'casual admission of the slip, zero defensive excuses, friendly warmth',
+      emotionalIntensity: 'mild',
+    },
+    relationshipDynamics: 'Close casual friendship where honesty and warmth trump formal protocol',
+    communicationPattern: 'acknowledge delay/problem → simple reason → warmth → continue relationship',
+    emotionalRepairPattern: 'express genuine desire to talk without dramatic fabrications',
+    naturalLanguageSignals: [
+      'Sorry, I completely forgot to call you back',
+      'Things got a bit hectic',
+      'it slipped my mind',
+      'Free to chat',
+      "Let's catch up",
+    ],
   },
   {
     id: 'kb-frn-002',
@@ -509,10 +620,25 @@ export const KNOWLEDGE_BASE: KnowledgeRecord[] = [
     lesson:
       'Always preserve explicit user-provided factual obstacles rather than overriding them with generated ones.',
     exampleParaphrase:
-      "My train got stopped between stations due to track maintenance. As soon as we start moving I'll send an updated ETA.",
+      "My train stopped between two stations, so I'm running late. I'll let you know as soon as we're moving again.",
     source: 'factual-preservation-patterns',
     confidence: 0.99,
-    tags: ['train_stopped', 'transit', 'factual_cause', 'delay', 'grounded', 'transportation'],
+    tags: ['train_stopped', 'transit', 'factual_cause', 'delay', 'grounded', 'transportation', 'stations'],
+    emotionalContext: {
+      recipientEmotion: 'waiting for your arrival or update, expecting timely status',
+      emotionalImpact: 'timing delay without hostility',
+      repairNeed: 'factual status update, realistic timing, proactive communication',
+      emotionalIntensity: 'mild',
+    },
+    relationshipDynamics: 'General schedule coordination where live facts prevent friction',
+    communicationPattern: 'state factual event → give status/impact → promise immediate live update',
+    emotionalRepairPattern: 'keep them informed proactively so they are never left wondering',
+    naturalLanguageSignals: [
+      'My train stopped between two stations',
+      "so I'm running late",
+      "I'll let you know as soon as we're moving again",
+      'stalled',
+    ],
   },
   {
     id: 'kb-soc-002',

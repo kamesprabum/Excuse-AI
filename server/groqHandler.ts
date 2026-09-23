@@ -7,6 +7,7 @@ import type {
   RefinementAction,
 } from '../src/services/intelligence/types';
 import type { GeneratedExcuse } from '../src/types';
+import { validateAndSanitizeResponse } from '../src/services/intelligence/qualityValidator';
 
 export interface GroqServerResponse {
   status: number;
@@ -185,6 +186,28 @@ function extractJsonObject(text: string): any {
       });
     }
 
+    if (res.status === 429) {
+      console.warn('[Groq Server] 429 rate limit reached. Pausing 5s for token replenishment and retrying once...');
+      await new Promise((r) => setTimeout(r, 5000));
+      res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: promptPayload.systemPrompt },
+            { role: 'user', content: promptPayload.userPrompt },
+          ],
+          temperature: promptPayload.temperature ?? 0.7,
+          max_tokens: promptPayload.maxTokens ?? 350,
+          response_format: { type: 'json_object' },
+        }),
+      });
+    }
+
     clearTimeout(timeout);
 
     if (!res.ok) {
@@ -226,54 +249,40 @@ function extractJsonObject(text: string): any {
       };
     }
 
-    let excuse = parsed.excuse.trim();
-    if (
-      (excuse.startsWith('"') && excuse.endsWith('"')) ||
-      (excuse.startsWith('“') && excuse.endsWith('”'))
-    ) {
-      excuse = excuse.slice(1, -1).trim();
-    }
-
-    const metaPrefixes = [
-      /^(here\s+is\s+(an\s+)?(excuse|response|message|text):\s*)/i,
-      /^(you\s+could\s+(say|text):\s*)/i,
-      /^(i\s+would\s+(say|text):\s*)/i,
-      /^(suggested\s+(response|message|excuse):\s*)/i,
-      /^(message\s+to\s+send:\s*)/i,
-      /^(the\s+reason\s+is:\s*)/i,
-      /^(response:\s*)/i,
-    ];
-
-    for (const regex of metaPrefixes) {
-      excuse = excuse.replace(regex, '').trim();
-    }
-
     const believability = Math.max(
       1,
       Math.min(5, Math.round(Number(parsed.believability) || 4))
     );
 
-    let followUp = null;
+    let rawFollowUp = null;
     if (
       parsed.followUp &&
       typeof parsed.followUp.question === 'string' &&
       typeof parsed.followUp.answer === 'string' &&
       context.detail !== 'short'
     ) {
-      followUp = {
+      rawFollowUp = {
         question: parsed.followUp.question.trim(),
         answer: parsed.followUp.answer.trim(),
       };
     }
+
+    const rawExcuse: GeneratedExcuse = {
+      excuse: parsed.excuse,
+      believability,
+      followUp: rawFollowUp,
+    };
+
+    const validated = validateAndSanitizeResponse(rawExcuse, context);
 
     return {
       status: 200,
       body: {
         success: true,
         data: {
-          excuse,
+          excuse: validated.sanitizedExcuse,
           believability,
-          followUp,
+          followUp: validated.sanitizedFollowUp,
         },
       },
     };

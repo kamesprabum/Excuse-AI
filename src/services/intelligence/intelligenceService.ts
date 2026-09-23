@@ -1,8 +1,9 @@
 import type { ExcuseRequest, GeneratedExcuse } from '../../types';
-import type { AIProviderAdapter, RefinementAction } from './types';
+import type { AIProviderAdapter, RefinementAction, ExcuseContext } from './types';
 import { createExcuseContext } from './reasoningEngine';
 import { FallbackProvider } from './fallbackProvider';
 import { GroqProvider } from './groqProvider';
+import { validateAndSanitizeResponse } from './qualityValidator';
 
 class IntelligenceService {
   private fallbackProvider: AIProviderAdapter = new FallbackProvider();
@@ -43,7 +44,7 @@ class IntelligenceService {
     try {
       if (this.activeProvider.isAvailable()) {
         const result = await this.activeProvider.generate(context, opts);
-        return this.normalizeResult(result);
+        return this.normalizeResult(result, context);
       }
     } catch (err) {
       console.warn(
@@ -54,7 +55,7 @@ class IntelligenceService {
 
     // Seamless fallback
     const fallbackResult = await this.fallbackProvider.generate(context, opts);
-    return this.normalizeResult(fallbackResult);
+    return this.normalizeResult(fallbackResult, context);
   }
 
   async refineWithIntelligence(
@@ -68,7 +69,7 @@ class IntelligenceService {
     try {
       if (this.activeProvider.isAvailable()) {
         const result = await this.activeProvider.refine(current, action, context, opts);
-        return this.normalizeResult(result);
+        return this.normalizeResult(result, context);
       }
     } catch (err) {
       console.warn(
@@ -78,17 +79,27 @@ class IntelligenceService {
     }
 
     const fallbackResult = await this.fallbackProvider.refine(current, action, context, opts);
-    return this.normalizeResult(fallbackResult);
+    return this.normalizeResult(fallbackResult, context);
   }
 
-  private normalizeResult(result: GeneratedExcuse): GeneratedExcuse {
+  private normalizeResult(result: GeneratedExcuse, context?: ExcuseContext): GeneratedExcuse {
+    let sanitized = result;
+    if (context) {
+      const v = validateAndSanitizeResponse(result, context);
+      sanitized = {
+        excuse: v.sanitizedExcuse,
+        believability: result.believability,
+        followUp: v.sanitizedFollowUp,
+      };
+    }
+
     return {
-      excuse: result.excuse.trim(),
-      believability: Math.max(1, Math.min(5, Math.round(result.believability || 4))),
-      followUp: result.followUp
+      excuse: sanitized.excuse.trim(),
+      believability: Math.max(1, Math.min(5, Math.round(sanitized.believability || 4))),
+      followUp: sanitized.followUp
         ? {
-            question: result.followUp.question.trim(),
-            answer: result.followUp.answer.trim(),
+            question: sanitized.followUp.question.trim(),
+            answer: sanitized.followUp.answer.trim(),
           }
         : null,
     };
